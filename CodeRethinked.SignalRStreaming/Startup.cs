@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CodeRethinked.SignalRStreaming.SignalR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ namespace CodeRethinked.SignalRStreaming
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -52,6 +53,10 @@ namespace CodeRethinked.SignalRStreaming
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<StreamHub>("/streamHub");
+            });
             app.UseMvc();
         }
     }
